@@ -1,51 +1,43 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Company } from './company.entity';
-import { CreateCompanyDto } from './company.dto';
 import { User } from './user.entity';
 import * as bcrypt from 'bcrypt';
-import { UserLoginDto } from './user.dto';
+import { UserDto } from './user.dto';
 import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class UserService {
   constructor(
-    @InjectRepository(User)
-    private usersRepository: Repository<User>, private jwt: JwtService
-  ) {
-  }
+    @InjectRepository(User) private userRepository: Repository<User>,
+    private jwt: JwtService,
+  ) {}
 
-  async signup(user: User): Promise<User> {
+  async signup(user: UserDto): Promise<User> {
     const salt = await bcrypt.genSalt();
-    const hash = await bcrypt.hash(user.password, salt);
-    user.password = hash;
-    return await this.usersRepository.save(user);
+    user.password = await bcrypt.hash(user.password, salt);
+    return await this.userRepository.save(user);
   }
 
-  async validateUser(user: UserLoginDto): Promise<any> {
-    const foundUser = await this.usersRepository.findOne({ where: { username: user.username } });
+  async validateUser(user: UserDto): Promise<UserDto> {
+    const foundUser = await this.userRepository.findOne({
+      where: { username: user.username },
+    });
     if (foundUser) {
       if (await bcrypt.compare(user.password, foundUser.password)) {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const { password, ...result } = foundUser;
-        return result;
+        return result as UserDto;
       }
 
       return null;
     }
     return null;
-
   }
 
-  async login(user: UserLoginDto) {
-    const payload = { username: user.username, sub: user.id, role: user.role };
-
+  async login(user: any) {
     return {
-      access_token: this.jwt.sign(payload),
+      access_token: this.jwt.sign(user),
     };
-  }
-
-  create(createCompanyDto: CreateCompanyDto): Promise<Company> {
-    return this.usersRepository.save(createCompanyDto);
   }
 }

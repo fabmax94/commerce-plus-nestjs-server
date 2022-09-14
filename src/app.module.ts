@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Company } from './company/company.entity';
-import { CompanyModule } from './company/company.module';
-import { ProductModule } from './product/product.module';
-import { Product } from './product/product.entity';
-import { AuthModule } from './auth/auth.module';
-import { User } from './auth/user.entity';
+import { Company } from './companies/entities/company.entity';
+import { Product } from './products/entities/product.entity';
+import { User } from './users/entities/user.entity';
+import { CompaniesModule } from './companies/companies.module';
+import { ProductsModule } from './products/products.module';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
@@ -15,9 +15,9 @@ import { User } from './auth/user.entity';
       entities: [Company, Product, User],
       synchronize: true,
     }),
-    CompanyModule,
-    ProductModule,
-    AuthModule,
+    CompaniesModule,
+    ProductsModule,
+    UsersModule,
   ],
 })
 export class AppModule {}

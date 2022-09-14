@@ -6,6 +6,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Product } from '../../products/entities/product.entity';
+import { SubType, Type } from '../companies.enum';
 
 @Entity()
 export class Company {
@@ -14,6 +15,26 @@ export class Company {
 
   @Column()
   name: string;
+
+  @Column({
+    type: 'enum',
+    enum: Type,
+    default: Type.restaurant,
+  })
+  type: Type;
+
+  @Column({
+    type: 'enum',
+    enum: SubType,
+    default: SubType.meet,
+  })
+  subType: SubType;
+
+  @Column()
+  location: string;
+
+  @Column()
+  image: string;
 
   @OneToMany(() => Product, (product) => product.company, {
     cascade: ['insert', 'update'],

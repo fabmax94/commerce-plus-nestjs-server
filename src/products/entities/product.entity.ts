@@ -18,6 +18,15 @@ export class Product {
   @Column()
   price: number;
 
+  @Column()
+  size: number;
+
+  @Column()
+  description: string;
+
+  @Column()
+  image: string;
+
   @ManyToOne(() => Company, (company) => company.products, {
     cascade: ['insert', 'update'],
   })

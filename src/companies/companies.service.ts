@@ -16,11 +16,25 @@ export class CompaniesService {
     return this.companiesRepository.save(createCompanyDto);
   }
 
-  findAll() {
-    return this.companiesRepository.find({
+  async findAll() {
+    const companies = await this.companiesRepository.find({
       relations: {
         products: true,
+        rates: true,
       },
+    });
+    return companies.map((company) => {
+      const averageRate = company.rates.length
+        ? company.rates.reduce(
+            (partialSum, rate) => partialSum + rate.score,
+            0,
+          ) / company.rates.length
+        : 0;
+
+      return {
+        averageRate,
+        ...company,
+      };
     });
   }
 

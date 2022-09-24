@@ -6,6 +6,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Product } from '../../products/entities/product.entity';
+import { Rate } from '../../rates/entities/rate.entity';
 import { SubType, Type } from '../companies.enum';
 
 @Entity()
@@ -41,4 +42,10 @@ export class Company {
   })
   @JoinColumn()
   products: Product[];
+
+  @OneToMany(() => Rate, (rate) => rate.company, {
+    cascade: ['insert', 'update'],
+  })
+  @JoinColumn()
+  rates: Rate[];
 }

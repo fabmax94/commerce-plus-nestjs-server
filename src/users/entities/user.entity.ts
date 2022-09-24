@@ -1,4 +1,11 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+import { Rate } from '../../rates/entities/rate.entity';
 
 @Entity()
 export class User {
@@ -10,4 +17,10 @@ export class User {
 
   @Column()
   password: string;
+
+  @OneToMany(() => Rate, (rate) => rate.user, {
+    cascade: ['insert', 'update'],
+  })
+  @JoinColumn()
+  rates: Rate[];
 }

@@ -13,10 +13,16 @@ export class User {
   id: number;
 
   @Column()
-  username: string;
+  email: string;
 
   @Column()
   password: string;
+
+  @Column()
+  name: string;
+
+  @Column()
+  address: string;
 
   @OneToMany(() => Rate, (rate) => rate.user, {
     cascade: ['insert', 'update'],

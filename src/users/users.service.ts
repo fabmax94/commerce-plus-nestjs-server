@@ -21,7 +21,7 @@ export class UsersService {
 
   async validateUser(updateUserDto: UserDto): Promise<UserDto> {
     const foundUser = await this.usersRepository.findOne({
-      where: { username: updateUserDto.username },
+      where: { email: updateUserDto.email },
     });
     if (foundUser) {
       if (await bcrypt.compare(updateUserDto.password, foundUser.password)) {

@@ -41,9 +41,6 @@ export class CompaniesService {
   findOne(id: number) {
     return this.companiesRepository.findOne({
       where: { id },
-      relations: {
-        products: true,
-      },
     });
   }
 

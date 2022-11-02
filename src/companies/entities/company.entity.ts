@@ -48,4 +48,11 @@ export class Company {
   })
   @JoinColumn()
   rates: Rate[];
+
+  public get averageRate(): number {
+    return this.rates.length
+      ? this.rates.reduce((partialSum, rate) => partialSum + rate.score, 0) /
+          this.rates.length
+      : 0;
+  }
 }

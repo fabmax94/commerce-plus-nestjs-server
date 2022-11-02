@@ -13,37 +13,46 @@ import { CompaniesService } from './companies.service';
 import { CreateCompanyDto } from './dto/create-company.dto';
 import { UpdateCompanyDto } from './dto/update-company.dto';
 import { AuthGuard } from '@nestjs/passport';
+import { CompanyDto } from './dto/company.dto';
+import { ProductDto } from '../products/dto/product.dto';
 
 @Controller('companies')
 export class CompaniesController {
-  constructor(private readonly companiesService: CompaniesService) {}
+  public constructor(private readonly companiesService: CompaniesService) {}
 
   @UseGuards(AuthGuard('jwt'))
   @Post()
-  create(@Body() createCompanyDto: CreateCompanyDto) {
+  public create(@Body() createCompanyDto: CreateCompanyDto): Promise<void> {
     return this.companiesService.create(createCompanyDto);
   }
 
   @Get()
-  findAll() {
+  public findAll(): Promise<CompanyDto[]> {
     return this.companiesService.findAll();
   }
 
+  @Get(':companyId/products')
+  public findProductsByCompany(
+    @Param('companyId', ParseIntPipe) companyId: number,
+  ): Promise<ProductDto[]> {
+    return this.companiesService.findProductsByCompany(companyId);
+  }
+
   @Get(':id')
-  findOne(@Param('id', ParseIntPipe) id: number) {
+  public findOne(@Param('id', ParseIntPipe) id: number): Promise<CompanyDto> {
     return this.companiesService.findOne(id);
   }
 
   @Patch(':id')
-  update(
+  public update(
     @Param('id', ParseIntPipe) id: number,
     @Body() updateCompanyDto: UpdateCompanyDto,
-  ) {
+  ): Promise<void> {
     return this.companiesService.update(id, updateCompanyDto);
   }
 
   @Delete(':id')
-  remove(@Param('id', ParseIntPipe) id: number) {
+  public remove(@Param('id', ParseIntPipe) id: number): Promise<void> {
     return this.companiesService.remove(id);
   }
 }

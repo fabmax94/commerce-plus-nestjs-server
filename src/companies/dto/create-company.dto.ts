@@ -1,6 +1,6 @@
 import { SubType, Type } from '../companies.enum';
 
-export class CreateCompanyDto {
+export interface CreateCompanyDto {
   name: string;
   type: Type;
   subType: SubType;

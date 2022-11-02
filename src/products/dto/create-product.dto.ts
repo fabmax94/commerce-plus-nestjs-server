@@ -1,8 +1,8 @@
-class CreateProductCompanyDto {
+interface CreateProductCompanyDto {
   id: number;
 }
 
-export class CreateProductDto {
+export interface CreateProductDto {
   name: string;
   price: number;
   company: CreateProductCompanyDto;

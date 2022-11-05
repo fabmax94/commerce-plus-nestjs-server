@@ -1,11 +1,7 @@
-interface CreateProductCompanyDto {
-  id: number;
-}
-
 export interface CreateProductDto {
   name: string;
   price: number;
-  company: CreateProductCompanyDto;
+  companyId: number;
   size: number;
   description: string;
   image: string;

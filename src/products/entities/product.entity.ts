@@ -27,9 +27,15 @@ export class Product {
   @Column()
   image: string;
 
+  @Column()
+  companyId: number;
+
   @ManyToOne(() => Company, (company) => company.products, {
     cascade: ['insert', 'update'],
   })
   @JoinColumn({ name: 'companyId' })
   company: Company;
+
+  @Column({ default: false })
+  isInactive: boolean;
 }

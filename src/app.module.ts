@@ -19,6 +19,9 @@ import { Rate } from './rates/entities/rate.entity';
       synchronize: true,
       database: process.env.POSTGRES_DB,
       entities: [Company, Product, User, Rate],
+      ssl: {
+        rejectUnauthorized: false,
+      },
     }),
     CompaniesModule,
     ProductsModule,

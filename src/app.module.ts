@@ -14,11 +14,8 @@ import { Rate } from './rates/entities/rate.entity';
   imports: [
     ConfigModule.forRoot({ envFilePath: `.env.${process.env.NODE_ENV}` }),
     TypeOrmModule.forRoot({
+      url: process.env.DATABASE_URL,
       type: 'postgres',
-      host: process.env.POSTGRES_HOST,
-      port: 5432,
-      username: process.env.POSTGRES_USER,
-      password: process.env.POSTGRES_PASSWORD,
       synchronize: true,
       database: process.env.POSTGRES_DB,
       entities: [Company, Product, User, Rate],

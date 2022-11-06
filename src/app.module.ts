@@ -10,6 +10,15 @@ import { ConfigModule } from '@nestjs/config';
 import { RatesModule } from './rates/rates.module';
 import { Rate } from './rates/entities/rate.entity';
 
+const sslConfig =
+  process.env.POSTGRES_HOST === 'localhost'
+    ? {
+        ssl: {
+          rejectUnauthorized: true,
+        },
+      }
+    : {};
+
 @Module({
   imports: [
     ConfigModule.forRoot({ envFilePath: `.env.${process.env.NODE_ENV}` }),
@@ -19,9 +28,7 @@ import { Rate } from './rates/entities/rate.entity';
       synchronize: true,
       database: process.env.POSTGRES_DB,
       entities: [Company, Product, User, Rate],
-      ssl: {
-        rejectUnauthorized: false,
-      },
+      ...sslConfig,
     }),
     CompaniesModule,
     ProductsModule,

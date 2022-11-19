@@ -8,6 +8,7 @@ export class CompanyDto {
   location: string;
   image: string;
   averageRate: number;
+  averagePrice: number;
 
   public constructor(content: Partial<CompanyDto>) {
     Object.assign(this, content);

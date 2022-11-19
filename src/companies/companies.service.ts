@@ -7,6 +7,7 @@ import { Repository } from 'typeorm';
 import { ProductsService } from '../products/products.service';
 import { ProductDto } from '../products/dto/product.dto';
 import { CompanyDto } from './dto/company.dto';
+import { Type } from './companies.enum';
 
 @Injectable()
 export class CompaniesService {
@@ -16,14 +17,44 @@ export class CompaniesService {
     private productsService: ProductsService,
   ) {}
 
-  public async create(createCompanyDto: CreateCompanyDto): Promise<void> {
-    await this.companiesRepository.save(createCompanyDto);
+  public async create(
+    ownerId: number,
+    createCompanyDto: CreateCompanyDto,
+  ): Promise<void> {
+    await this.companiesRepository.save({
+      ...createCompanyDto,
+      ownerId,
+    });
   }
 
-  public async findAll(): Promise<CompanyDto[]> {
+  public async findAll(type: Type | undefined): Promise<CompanyDto[]> {
     const companies = await this.companiesRepository.find({
+      where: {
+        ...(type ? { type } : {}),
+      },
       relations: {
         rates: true,
+        products: true,
+      },
+    });
+
+    return companies.map((company) => {
+      return new CompanyDto({
+        averageRate: company.averageRate,
+        averagePrice: company.averagePrice,
+        ...company,
+      });
+    });
+  }
+
+  public async findMyCompanies(ownerId: number): Promise<CompanyDto[]> {
+    const companies = await this.companiesRepository.find({
+      where: {
+        ownerId,
+      },
+      relations: {
+        rates: true,
+        owner: true,
       },
     });
 
@@ -40,11 +71,13 @@ export class CompaniesService {
       where: { id },
       relations: {
         rates: true,
+        products: true,
       },
     });
 
     return new CompanyDto({
       averageRate: company.averageRate,
+      averagePrice: company.averagePrice,
       ...company,
     });
   }

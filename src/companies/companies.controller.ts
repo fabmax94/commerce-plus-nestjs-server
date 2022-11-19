@@ -8,6 +8,8 @@ import {
   Delete,
   ParseIntPipe,
   UseGuards,
+  Request,
+  Query,
 } from '@nestjs/common';
 import { CompaniesService } from './companies.service';
 import { CreateCompanyDto } from './dto/create-company.dto';
@@ -15,6 +17,7 @@ import { UpdateCompanyDto } from './dto/update-company.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { CompanyDto } from './dto/company.dto';
 import { ProductDto } from '../products/dto/product.dto';
+import { Type } from './companies.enum';
 
 @Controller('companies')
 export class CompaniesController {
@@ -22,13 +25,22 @@ export class CompaniesController {
 
   @UseGuards(AuthGuard('jwt'))
   @Post()
-  public create(@Body() createCompanyDto: CreateCompanyDto): Promise<void> {
-    return this.companiesService.create(createCompanyDto);
+  public create(
+    @Request() req,
+    @Body() createCompanyDto: CreateCompanyDto,
+  ): Promise<void> {
+    return this.companiesService.create(req.user.userId, createCompanyDto);
   }
 
   @Get()
-  public findAll(): Promise<CompanyDto[]> {
-    return this.companiesService.findAll();
+  public findAll(@Query('type') type: Type): Promise<CompanyDto[]> {
+    return this.companiesService.findAll(type);
+  }
+
+  @Get('my-companies')
+  @UseGuards(AuthGuard('jwt'))
+  public myCompanies(@Request() req): Promise<CompanyDto[]> {
+    return this.companiesService.findMyCompanies(req.user.userId);
   }
 
   @Get(':companyId/products')

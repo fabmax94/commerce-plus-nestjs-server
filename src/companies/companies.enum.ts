@@ -1,10 +1,22 @@
 export enum Type {
-  restaurant = 'Restaurant',
-  pharmacy = 'Pharmacy',
-  market = 'Market',
+  RESTAURANT = 'RESTAURANT',
+  PHARMACY = 'PHARMACY',
+  MARKET = 'MARKET',
+  BEER = 'BEER',
+  PETS = 'PETS',
+  SHOPPING = 'SHOPPING',
 }
 
 export enum SubType {
-  meet = 'Meet',
-  chinese = 'Chinese',
+  MEET = 'MEET',
+  SWEET = 'SWEET',
+  SAVORY = 'SAVORY',
+  ORIENTAL = 'ORIENTAL',
+  HEALTHY = 'HEALTHY',
+  SPORT = 'SPORT',
+  BOOK = 'BOOK',
+  GIFT = 'GIFT',
+  ELECTRONICS = 'ELECTRONICS',
+  COSMETIC = 'COSMETIC',
+  FURNITURE = 'FURNITURE',
 }

@@ -6,6 +6,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Rate } from '../../rates/entities/rate.entity';
+import { Company } from '../../companies/entities/company.entity';
 
 @Entity()
 export class User {
@@ -29,4 +30,10 @@ export class User {
   })
   @JoinColumn()
   rates: Rate[];
+
+  @OneToMany(() => Company, (company) => company.owner, {
+    cascade: ['insert', 'update'],
+  })
+  @JoinColumn()
+  companies: Company[];
 }

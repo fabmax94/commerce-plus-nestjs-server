@@ -13,7 +13,7 @@ export class User {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({ unique: true })
   email: string;
 
   @Column()
@@ -24,6 +24,9 @@ export class User {
 
   @Column()
   address: string;
+
+  @Column({ nullable: true })
+  phone: string;
 
   @OneToMany(() => Rate, (rate) => rate.user, {
     cascade: ['insert', 'update'],

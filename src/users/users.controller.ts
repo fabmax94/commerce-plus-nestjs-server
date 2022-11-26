@@ -28,6 +28,7 @@ export class UsersController {
     return this.usersService.login(req.user);
   }
 
+  @UseGuards(AuthGuard('jwt'))
   @Patch(':id')
   update(
     @Param('id', ParseIntPipe) id: number,

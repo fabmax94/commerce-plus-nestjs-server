@@ -8,6 +8,7 @@ import { ProductsService } from '../products/products.service';
 import { ProductDto } from '../products/dto/product.dto';
 import { CompanyDto } from './dto/company.dto';
 import { Type } from './companies.enum';
+import { UserDto } from '../users/dto/user.dto';
 
 @Injectable()
 export class CompaniesService {
@@ -72,12 +73,14 @@ export class CompaniesService {
       relations: {
         rates: true,
         products: true,
+        owner: true,
       },
     });
 
     return new CompanyDto({
       averageRate: company.averageRate,
       averagePrice: company.averagePrice,
+      owner: new UserDto(company.owner),
       ...company,
     });
   }

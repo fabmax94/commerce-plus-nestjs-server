@@ -13,13 +13,13 @@ export class UsersService {
     @InjectRepository(User) private usersRepository: Repository<User>,
     private jwt: JwtService,
   ) {}
-  async signup(createUserDto: CreateUserDto): Promise<User> {
+  public async signup(createUserDto: CreateUserDto): Promise<User> {
     const salt = await bcrypt.genSalt();
     createUserDto.password = await bcrypt.hash(createUserDto.password, salt);
     return await this.usersRepository.save(createUserDto);
   }
 
-  async validateUser(updateUserDto: UserDto): Promise<UserDto> {
+  public async validateUser(updateUserDto: UserDto): Promise<UserDto> {
     const foundUser = await this.usersRepository.findOne({
       where: { email: updateUserDto.email },
     });
@@ -35,13 +35,22 @@ export class UsersService {
     return null;
   }
 
-  async login(user: any) {
+  public async login(user: any) {
     return {
       access_token: this.jwt.sign(user),
+      ...user,
     };
   }
 
-  update(id: number, updateUserDto: UserDto) {
-    return this.usersRepository.update(id, updateUserDto);
+  public async update(id: number, updateUserDto: UserDto): Promise<UserDto> {
+    await this.usersRepository.update(id, updateUserDto);
+
+    const user = await this.usersRepository.findOne({
+      where: {
+        id,
+      },
+    });
+
+    return new UserDto(user);
   }
 }

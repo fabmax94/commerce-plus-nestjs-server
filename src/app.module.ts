@@ -14,7 +14,7 @@ const sslConfig =
   process.env.POSTGRES_HOST === 'localhost'
     ? {
         ssl: {
-          rejectUnauthorized: true,
+          rejectUnauthorized: false,
         },
       }
     : {};

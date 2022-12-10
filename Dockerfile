@@ -8,7 +8,7 @@ RUN npm i -g @nestjs/cli
 
 RUN npm ci
 
-COPY . .
+COPY . /usr/src/app
 
 RUN npm run build
 

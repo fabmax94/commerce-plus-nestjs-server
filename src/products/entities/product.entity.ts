@@ -3,9 +3,11 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Company } from '../../companies/entities/company.entity';
+import { ProductImage } from './product-image.entity';
 
 @Entity()
 export class Product {
@@ -25,9 +27,6 @@ export class Product {
   description: string;
 
   @Column()
-  image: string;
-
-  @Column()
   companyId: number;
 
   @ManyToOne(() => Company, (company) => company.products, {
@@ -38,4 +37,10 @@ export class Product {
 
   @Column({ default: false })
   isInactive: boolean;
+
+  @OneToMany(() => ProductImage, (image) => image.product, {
+    cascade: ['insert', 'update'],
+  })
+  @JoinColumn()
+  images: ProductImage[];
 }

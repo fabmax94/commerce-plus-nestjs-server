@@ -21,6 +21,7 @@ export class ProductsService {
     const products = await this.productsRepository.find({
       relations: {
         company: true,
+        images: true,
       },
     });
     return products.map((product) => new ProductDto(product));
@@ -32,6 +33,9 @@ export class ProductsService {
         company: {
           id: companyId,
         },
+      },
+      relations: {
+        images: true,
       },
     });
 
@@ -50,7 +54,10 @@ export class ProductsService {
     id: number,
     updateProductDto: UpdateProductDto,
   ): Promise<void> {
-    await this.productsRepository.update(id, updateProductDto);
+    await this.productsRepository.save({
+      id,
+      ...updateProductDto,
+    });
   }
 
   public async remove(id: number): Promise<void> {

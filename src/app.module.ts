@@ -9,6 +9,7 @@ import { UsersModule } from './users/users.module';
 import { ConfigModule } from '@nestjs/config';
 import { RatesModule } from './rates/rates.module';
 import { Rate } from './rates/entities/rate.entity';
+import { ProductImage } from './products/entities/product-image.entity';
 
 @Module({
   imports: [
@@ -18,7 +19,7 @@ import { Rate } from './rates/entities/rate.entity';
       type: 'postgres',
       synchronize: true,
       database: process.env.POSTGRES_DB,
-      entities: [Company, Product, User, Rate],
+      entities: [Company, Product, User, Rate, ProductImage],
     }),
     CompaniesModule,
     ProductsModule,

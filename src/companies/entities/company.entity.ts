@@ -61,10 +61,11 @@ export class Company {
   ownerId: number;
 
   public get averageRate(): number {
-    return this.rates.length
+    const result = this.rates.length
       ? this.rates.reduce((partialSum, rate) => partialSum + rate.score, 0) /
-          this.rates.length
+        this.rates.length
       : 0;
+    return Number(result.toFixed(1));
   }
 
   public get averagePrice(): number {

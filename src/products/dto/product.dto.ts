@@ -4,7 +4,6 @@ export class ProductDto {
   id: number;
   name: string;
   price: number;
-  size: number;
   description: string;
   images: ProductImageDto[];
 

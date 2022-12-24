@@ -9,6 +9,7 @@ import { ProductDto } from '../products/dto/product.dto';
 import { CompanyDto } from './dto/company.dto';
 import { Type } from './companies.enum';
 import { UserDto } from '../users/dto/user.dto';
+import { RateDto } from '../rates/dto/rate.dto';
 
 @Injectable()
 export class CompaniesService {
@@ -71,17 +72,20 @@ export class CompaniesService {
     const company = await this.companiesRepository.findOne({
       where: { id },
       relations: {
-        rates: true,
+        rates: {
+          user: true,
+        },
         products: true,
         owner: true,
       },
     });
 
     return new CompanyDto({
+      ...company,
       averageRate: company.averageRate,
       averagePrice: company.averagePrice,
       owner: new UserDto(company.owner),
-      ...company,
+      rates: company.rates.map((rate) => RateDto.buildFromRate(rate)),
     });
   }
 

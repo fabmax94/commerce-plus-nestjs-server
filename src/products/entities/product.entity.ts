@@ -21,9 +21,6 @@ export class Product {
   price: number;
 
   @Column()
-  size: number;
-
-  @Column()
   description: string;
 
   @Column()

@@ -33,4 +33,7 @@ export class Rate {
   })
   @JoinColumn({ name: 'userId' })
   user: User;
+
+  @Column({ type: 'varchar', default: '' })
+  text: string;
 }

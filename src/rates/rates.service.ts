@@ -11,8 +11,8 @@ export class RatesService {
     private ratesRepository: Repository<Rate>,
   ) {}
 
-  create(createRateDto: CreateRateDto) {
-    return this.ratesRepository.save({
+  public async create(createRateDto: CreateRateDto): Promise<void> {
+    await this.ratesRepository.save({
       ...createRateDto,
       score: Number(createRateDto.score),
     });

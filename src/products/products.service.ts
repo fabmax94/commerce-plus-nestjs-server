@@ -5,12 +5,15 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Product } from './entities/product.entity';
 import { Repository } from 'typeorm';
 import { ProductDto } from './dto/product.dto';
+import { ProductImage } from './entities/product-image.entity';
 
 @Injectable()
 export class ProductsService {
   public constructor(
     @InjectRepository(Product)
     private productsRepository: Repository<Product>,
+    @InjectRepository(ProductImage)
+    private productImagesRepository: Repository<ProductImage>,
   ) {}
 
   public async create(createProductDto: CreateProductDto): Promise<void> {
@@ -61,6 +64,7 @@ export class ProductsService {
   }
 
   public async remove(id: number): Promise<void> {
+    await this.productImagesRepository.delete({ product: { id: id } });
     await this.productsRepository.delete(id);
   }
 }

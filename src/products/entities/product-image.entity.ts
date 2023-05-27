@@ -16,7 +16,7 @@ export class ProductImage {
   data: string;
 
   @ManyToOne(() => Product, (product) => product.images, {
-    cascade: ['insert', 'update', 'remove'],
+    cascade: ['insert', 'update'],
   })
   @JoinColumn({ name: 'productId' })
   product: Product;

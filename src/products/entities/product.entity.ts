@@ -36,7 +36,7 @@ export class Product {
   isInactive: boolean;
 
   @OneToMany(() => ProductImage, (image) => image.product, {
-    cascade: ['insert', 'update', 'remove'],
+    cascade: ['insert', 'update'],
   })
   @JoinColumn()
   images: ProductImage[];
